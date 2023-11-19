@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
-using UnityEditorInternal;
 using UnityEngine;
 
 public abstract class PlayerState
@@ -15,6 +13,7 @@ public abstract class PlayerState
 
     public virtual void Move(Vector2 vec)
     {
+        
         float rotateDeg = Mathf.Rad2Deg * Mathf.Atan2(vec.y, vec.x * -1) - 90;
         Vector3 rotateVec = new Vector3(_player.transform.rotation.x, rotateDeg, _player.transform.rotation.z);
         _player.transform.rotation = Quaternion.Slerp(_player.transform.rotation, Quaternion.Euler(rotateVec), 100.0f);
@@ -58,7 +57,8 @@ public class PlayerDefaultState : PlayerState
                 if (h.transform.TryGetComponent<ThrowObject>(out ThrowObject tObj))
                 {
                     tObj.PickUp(_player);
-                    _player.State = PlayerPickUpState.GetState(_player, tObj);
+                    _player.PickUpObject = tObj;
+                    _player.State = PlayerPickUpState.GetState(_player);
                     break;
                 }
             }
@@ -69,25 +69,19 @@ public class PlayerDefaultState : PlayerState
 public class PlayerPickUpState : PlayerState
 {
     private static PlayerPickUpState _instance;
-    protected PlayerPickUpState(Player player, ThrowObject throwObj = null) : base(player)
-    {
-        _throwObject = throwObj;
-    }
-    public static PlayerPickUpState GetState(Player player, ThrowObject throwObj = null)
+    protected PlayerPickUpState(Player player) : base(player) { }
+    public static PlayerPickUpState GetState(Player player)
     {
         if (_instance == null)
         {
-            _instance = new PlayerPickUpState(player, throwObj);
+            _instance = new PlayerPickUpState(player);
         }
         else
         {
             _instance._player = player;
-            _instance._throwObject = throwObj;
         }
         return _instance;
     }
-    
-    private ThrowObject _throwObject;
     
     public override void Move(Vector2 vec)
     {
@@ -97,6 +91,6 @@ public class PlayerPickUpState : PlayerState
     public override void Use()
     {
         _player.State = PlayerDefaultState.GetState(_player);
-        _throwObject.Throw(_player);
+        _player.PickUpObject.Throw(_player);
     }
 }

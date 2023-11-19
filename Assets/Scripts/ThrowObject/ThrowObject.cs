@@ -21,11 +21,11 @@ public class ThrowObject : MonoBehaviour, IThrowable
     private Rigidbody rigidBody;
     public void PickUp(Player player)
     {
-        rigidBody.velocity = Vector3.zero;
-        transform.rotation = Quaternion.identity;
         hitEnemys.Clear();
         rigidBody.isKinematic = true;
-        transform.position = player.transform.position + player.transform.up * 2;
+        rigidBody.velocity = Vector3.zero;
+        transform.rotation = Quaternion.identity;
+        transform.position = player.transform.position + Vector3.up * 2;
         transform.SetParent(player.transform);
     }
     public void Throw(Player player)

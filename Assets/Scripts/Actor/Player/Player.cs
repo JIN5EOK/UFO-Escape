@@ -26,6 +26,11 @@ public class Player : Actor, IInputable
         set => _state = value; 
     }
 
+    public ThrowObject PickUpObject
+    {
+        get;
+        set;
+    }
     [SerializeField] private PlayerStatus _status;
     public PlayerStatus Status
     {
@@ -51,7 +56,6 @@ public class Player : Actor, IInputable
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            
             Debug.Log("사망");
         }
     }
