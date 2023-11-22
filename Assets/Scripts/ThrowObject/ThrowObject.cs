@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public interface IThrowable
@@ -33,11 +32,11 @@ public class ThrowObject : MonoBehaviour, IThrowable
         transform.position = player.transform.position;
         rigidBody.isKinematic = false;
         transform.SetParent(null);
-        rigidBody.AddForce(player.transform.forward * 2000);
+        rigidBody.AddForce(player.transform.forward * 1000);
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (rigidBody.velocity.magnitude < 3.0f)
+        if (rigidBody.velocity.magnitude < 1.0f)
             return;
         if (hitEnemys.Contains(other.gameObject))
             return;
