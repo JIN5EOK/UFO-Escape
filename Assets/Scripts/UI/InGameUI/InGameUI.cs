@@ -28,7 +28,7 @@ public class InGameUI : MonoBehaviour
         int hp = _player.Status.Hp;
         for (int i = 0; i < hpIcons.Length; i++)
         {
-            hpIcons[i].gameObject.SetActive(i <= hp);
+            hpIcons[i].gameObject.SetActive(i < hp);
         }
     }
 
