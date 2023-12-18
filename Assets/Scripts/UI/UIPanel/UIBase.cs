@@ -7,7 +7,6 @@ using UnityEngine;
 public class UIBase : MonoBehaviour
 {
     public event Action onClose;
-
     public void CloseUI()
     {
         onClose?.Invoke();
@@ -16,11 +15,15 @@ public class UIBase : MonoBehaviour
     
     private void OnEnable()
     {
-        Time.timeScale = 0.0f;
+        GameManager s = FindObjectOfType<GameManager>();
+        if (s != null)
+            s.StageState = GameManager.StageStates.Pause;
     }
 
     private void OnDisable()
     {
-        Time.timeScale = 1.0f;
+        GameManager s = FindObjectOfType<GameManager>();
+        if (s != null)
+            s.StageState = GameManager.StageStates.Play;
     }
 }

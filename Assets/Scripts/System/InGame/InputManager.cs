@@ -20,8 +20,10 @@ public class InputManager : MonoBehaviour
 
     private void Awake()
     {
-        if (_inputTargetForDebug != null)
-            _inputTarget = _inputTargetForDebug;
+        if (_inputTargetForDebug == null)
+            _inputTargetForDebug = FindObjectOfType<Player>();
+                
+        _inputTarget = _inputTargetForDebug;
     }
 
     private void Update()

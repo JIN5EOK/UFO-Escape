@@ -88,11 +88,16 @@ public class Player : Actor, IInputable
     }
     private float hitAgainTime = 1.0f;
     private float hitAgainTimer = 0.0f;
+    public void Damaged(int damage)
+    {
+        Status.Hp -= damage;
+    }
     public void OnTriggerStay(Collider other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy") && hitAgainTimer <= 0.0f)
         {
-            Status.Hp--;
+            AudioManager.Instance.PlaySfx(AudioManager.Sfxs.retro_impact_hit_03);
+            Damaged(1);
             hitAgainTimer = hitAgainTime;
         }
     }

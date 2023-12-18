@@ -12,12 +12,13 @@ public class CommonEnemy : Enemy
     private bool _isDetect = false;
     private Player _target;
     private NavMeshAgent navMeshAgent;
-    private void Start()
+    protected void Start()
     {
+        base.Start();
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.speed = _moveSpeed; 
         _target = FindObjectOfType<Player>();
-    } 
+    }
     private void Update()
     {
         if (_isDetect == true)
@@ -47,8 +48,7 @@ public class CommonEnemy : Enemy
             transform.Rotate(new Vector3(0,rotate, 0));
             _randomMoveTimer = _randomMoveCycle;
         }
-        Debug.Log(_randomMoveTimer);
-        transform.Translate(transform.forward * Time.deltaTime);
+        transform.Translate(Vector3.forward * Time.deltaTime * _moveSpeed);
     }
     
     private void DetectPlayer()
@@ -59,6 +59,9 @@ public class CommonEnemy : Enemy
         
         _isDetect = theta <= _detectAngle && Vector3.Distance(_target.transform.position, 
             this.transform.position) <= _detectDistance;
+        
+        if (Hp < MaxHp)
+            _isDetect = true;
     }
     
     void OnDrawGizmos()

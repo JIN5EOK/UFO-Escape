@@ -12,8 +12,20 @@ public class PausePanel : UIBase
 
     private void Start()
     {
-        _resumeButton.onClick.AddListener(() => Destroy(this.gameObject));
-        _restartButton.onClick.AddListener(() => GameManager.Instance.LoadScene(SceneManager.GetActiveScene().name));
-        _mainMenuButton.onClick.AddListener(() => GameManager.Instance.LoadScene("MainMenu"));
+        _resumeButton.onClick.AddListener(() =>
+        {
+            AudioManager.Instance.PlaySfx(AudioManager.Sfxs.ui_menu_button_click_01);
+            Destroy(this.gameObject);
+        });
+        _restartButton.onClick.AddListener(() =>
+        {
+            AudioManager.Instance.PlaySfx(AudioManager.Sfxs.ui_menu_button_click_01);
+            ScenesManager.Instance.RestartStage();
+        });
+        _mainMenuButton.onClick.AddListener(() =>
+        {
+            AudioManager.Instance.PlaySfx(AudioManager.Sfxs.ui_menu_button_click_01);
+            ScenesManager.Instance.LoadScene("MainMenu");
+        });
     }
 }

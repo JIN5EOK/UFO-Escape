@@ -8,17 +8,17 @@ public class GameClearPanel : UIBase
 {
     [SerializeField] private Button _retryBtn;
     [SerializeField] private Button _nextBtn;
-
-    public string nextStage;
     private void Start()
     {
         _retryBtn.onClick.AddListener(() =>
         {
-            GameManager.Instance.LoadScene(SceneManager.GetActiveScene().name);
+            AudioManager.Instance.PlaySfx(AudioManager.Sfxs.ui_menu_button_click_01);
+            ScenesManager.Instance.RestartStage();
         });
         _nextBtn.onClick.AddListener(() =>
         {
-            GameManager.Instance.LoadScene(nextStage);
+            AudioManager.Instance.PlaySfx(AudioManager.Sfxs.ui_menu_button_click_01);
+            ScenesManager.Instance.NextStage();
         });
     }
 }

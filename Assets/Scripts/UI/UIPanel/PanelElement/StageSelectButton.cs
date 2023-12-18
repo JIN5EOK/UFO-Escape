@@ -14,6 +14,7 @@ public class StageSelectButton : MonoBehaviour
     }
     private void MoveScene()
     {
-        SceneManager.LoadScene(_stageName);
+        AudioManager.Instance.PlaySfx(AudioManager.Sfxs.ui_menu_button_click_01);
+        ScenesManager.Instance.LoadScene(_stageName);
     }
 }

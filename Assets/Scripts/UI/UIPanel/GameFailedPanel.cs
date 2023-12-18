@@ -10,8 +10,16 @@ public class GameFailedPanel : UIBase
     [SerializeField] private Button _mainMenuButton;
     private void Start()
     {
-        _retryButton.onClick.AddListener(() => GameManager.Instance.LoadScene(SceneManager.GetActiveScene().name));
-        _mainMenuButton.onClick.AddListener(() => GameManager.Instance.LoadScene("MainMenu"));
+        _retryButton.onClick.AddListener(() =>
+        {
+            AudioManager.Instance.PlaySfx(AudioManager.Sfxs.ui_menu_button_click_01);
+            ScenesManager.Instance.RestartStage();
+        });
+        _mainMenuButton.onClick.AddListener(() =>
+        {
+            AudioManager.Instance.PlaySfx(AudioManager.Sfxs.ui_menu_button_click_01);
+            ScenesManager.Instance.LoadScene("MainMenu");
+        });
     }
     
 }

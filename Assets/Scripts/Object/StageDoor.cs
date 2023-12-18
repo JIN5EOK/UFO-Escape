@@ -6,23 +6,26 @@ using UnityEngine;
 
 public class StageDoor : MonoBehaviour
 {
-    [SerializeField] private CommonStageManager _commonStageManager;
+    private CommonGameManager _commonGameManager;
     
     // 좌측, 우측 문짝
     [SerializeField] private Transform _leftLeaf;
     [SerializeField] private Transform _rightLeaf;
-    [SerializeField] private bool _isOpen;
+    private bool _isOpen;
     
     private void Start()
     {
-        _commonStageManager = FindObjectOfType<CommonStageManager>(); 
-        _commonStageManager.onStageClear += OpenDoor;
+        _commonGameManager = FindObjectOfType<CommonGameManager>(); 
+        _commonGameManager.onStageClear += OpenDoor;
     }
 
     private void OpenDoor()
     {
-        _leftLeaf.transform.position += Vector3.left * 0.75f;
-        _rightLeaf.transform.position += Vector3.right * 0.75f;
+        
+        if(_leftLeaf != null)
+            Destroy(_leftLeaf.gameObject);
+        if(_rightLeaf != null)
+            Destroy(_rightLeaf.gameObject);
         _isOpen = true;
     }
     
@@ -33,7 +36,7 @@ public class StageDoor : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            _commonStageManager.OpenNextStagePanel();
+            _commonGameManager.OpenNextStagePanel();
         }
     }
 }

@@ -8,6 +8,7 @@ public class UICloseButton : MonoBehaviour
     
     public void Close()
     {
+        AudioManager.Instance.PlaySfx(AudioManager.Sfxs.ui_menu_button_click_01);
         closeTarget.CloseUI();
     }
 }

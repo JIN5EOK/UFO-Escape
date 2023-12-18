@@ -34,6 +34,7 @@ public class InGameUI : MonoBehaviour
 
     private void PressPause()
     {
+        AudioManager.Instance.PlaySfx(AudioManager.Sfxs.ui_menu_button_click_01);
         ResourcesManager.Instance.Instantiate(ResourcesManager.UI_PATH + "PausePanel");
     }
 }

@@ -7,7 +7,7 @@ public class Actor : MonoBehaviour
 {
     public event Action<Actor> onDestoryed;
     
-    public void OnDestroy()
+    protected virtual void OnDestroy()
     {
         onDestoryed?.Invoke(this);
     }
