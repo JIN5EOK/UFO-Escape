@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using DesignPattern.Singleton;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class AudioManager : MonoSingleton<AudioManager>
@@ -19,6 +18,7 @@ public class AudioManager : MonoSingleton<AudioManager>
         retro_impact_hit_13, // 적 피격 (물건에)
         retro_impact_hit_03, // 플레이어 피격
         explosion_large_01, // 폭발음
+        mouse_emote_09 // 몹 비명
     }
     
     private Dictionary<string, AudioClip> bgms = new Dictionary<string, AudioClip>();

@@ -13,28 +13,27 @@ public class ScenesManager : MonoSingleton<ScenesManager>
     void Awake()
     {
         base.Awake();
-    }
-
-    private void Start()
-    {
         InitStageMap();
     }
-
     public void InitStageMap()
     {
-        SceneAsset[] _stageScenes = ResourcesManager.Instance.GetResources<SceneAsset>(ResourcesManager.STAGE_PATH);  
-        for (int i = 0; i < _stageScenes.Length; i++)
-        {
-            Debug.Log(_stageScenes[i].name);
-            if (i == _stageScenes.Length - 1)
-            {
-                _nextStageMap.Add(_stageScenes[i].name, null);
-            }
-            else
-            {
-                _nextStageMap.Add(_stageScenes[i].name, _stageScenes[i + 1].name);
-            }
-        }
+        //UnityEngine.Object[] _stageScenes = ResourcesManager.Instance.GetResources<UnityEngine.Object>(ResourcesManager.STAGE_PATH);  
+        
+        _nextStageMap.Add("Stage1","Stage2");
+        _nextStageMap.Add("Stage2","Stage3");
+        _nextStageMap.Add("Stage1",null);
+        // for (int i = 0; i < _stageScenes.Length; i++)
+        // {
+        //     Debug.Log(_stageScenes[i].name);
+        //     if (i == _stageScenes.Length - 1)
+        //     {
+        //         _nextStageMap.Add(_stageScenes[i].name, null);
+        //     }
+        //     else
+        //     {
+        //         _nextStageMap.Add(_stageScenes[i].name, _stageScenes[i + 1].name);
+        //     }
+        // }
     }
     public void LoadScene(string sceneName)
     {

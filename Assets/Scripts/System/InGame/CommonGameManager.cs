@@ -13,8 +13,7 @@ using UnityEngine.UI;
 /// </summary>
 public class CommonGameManager : GameManager
 {
-    public int LeftEnemy { get => _enemies.Count; }
-    private List<Enemy> _enemies = new List<Enemy>();
+    private int leftEnemy;
     private StageDoor _stageDoor;
     
     protected void Start()
@@ -33,19 +32,15 @@ public class CommonGameManager : GameManager
         // 맵에 있는 몬스터들한테 사망시 이벤트 걸기
         foreach (var e in tempEnemies)
         {
-            _enemies.Add(e);
-            e.onDestoryed += RemoveEnemy;
+            leftEnemy++;
+            e.Status.onDied += RemoveEnemy;
         }
     }
-    private void RemoveEnemy(Actor removedEnemy)
+    private void RemoveEnemy()
     {
-        if (_enemies.Contains((Enemy)removedEnemy) == false)
-            return;
-        
-        _enemies.Remove((Enemy)removedEnemy);
-
-        Debug.Log("남은 적" + LeftEnemy);
-        if (LeftEnemy <= 0)
+        leftEnemy--;
+        Debug.Log("남은 적" + leftEnemy);
+        if (leftEnemy <= 0)
         {
             StageClear();
         }

@@ -5,38 +5,35 @@ using UnityEngine.AI;
 
 public class CommonEnemy : Enemy
 {
-    [SerializeField] 
-    private float _moveSpeed;
     private float _detectDistance = 5.0f;
     private float _detectAngle = 90.0f;
     private bool _isDetect = false;
     private Player _target;
     private NavMeshAgent navMeshAgent;
-    protected void Start()
+    protected override void Start()
     {
         base.Start();
         navMeshAgent = GetComponent<NavMeshAgent>();
-        navMeshAgent.speed = _moveSpeed; 
+        navMeshAgent.speed = Status.Speed; 
         _target = FindObjectOfType<Player>();
     }
     private void Update()
     {
-        if (_isDetect == true)
-        {
-            navMeshAgent.SetDestination(_target.transform.position);
-        }
-        else
-        {
-            RandomMove();
-            DetectPlayer();
-        }
+        Move();
+        DetectPlayer();
     }
 
 
     private float _randomMoveTimer = 0.0f;
     private float _randomMoveCycle = 5.0f;
-    private void RandomMove()
+    private void Move()
     {
+        if (_isDetect == true)
+        {
+            navMeshAgent.SetDestination(_target.transform.position);
+            return;
+        }
+        
         if (_randomMoveTimer >= 0.0f)
         {
             
@@ -48,7 +45,7 @@ public class CommonEnemy : Enemy
             transform.Rotate(new Vector3(0,rotate, 0));
             _randomMoveTimer = _randomMoveCycle;
         }
-        transform.Translate(Vector3.forward * Time.deltaTime * _moveSpeed);
+        transform.Translate(Vector3.forward * Time.deltaTime * Status.Speed);
     }
     
     private void DetectPlayer()
@@ -60,7 +57,7 @@ public class CommonEnemy : Enemy
         _isDetect = theta <= _detectAngle && Vector3.Distance(_target.transform.position, 
             this.transform.position) <= _detectDistance;
         
-        if (Hp < MaxHp)
+        if (Status.Hp < Status.MaxHp)
             _isDetect = true;
     }
     

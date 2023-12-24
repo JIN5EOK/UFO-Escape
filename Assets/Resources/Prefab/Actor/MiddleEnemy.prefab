@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 3778108927621074658}
   - component: {fileID: 3778108927621074657}
   - component: {fileID: 3778108927621074663}
-  - component: {fileID: 3778108927621074662}
+  - component: {fileID: 1797048218756900663}
   m_Layer: 7
   m_Name: MiddleEnemy
   m_TagString: Untagged
@@ -395,7 +395,7 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3778108927621074662
+--- !u!114 &1797048218756900663
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -404,10 +404,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3778108927621074671}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c91ff5e9fd80f2f468f69f24c252dddc, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d609a7fade4dd74db33ad83bf3e9ace, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hp: 3
+  _status:
+    _hp: 3
+    _speed: 0.9
   _moveSpeed: 0.9
 --- !u!1 &3787971202226364523
 GameObject:

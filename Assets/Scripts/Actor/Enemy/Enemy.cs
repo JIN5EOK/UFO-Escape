@@ -6,33 +6,15 @@ using UnityEngine;
 
 public abstract class Enemy : Actor
 {
-    
-    [SerializeField] private int _hp;
-
-    public int MaxHp
+    protected override void Start()
     {
-        get;
-        private set;
-    }
-    public int Hp
-    {
-        get => _hp;
-        protected set
+        base.Start();
+        Status.onDied += () =>
         {
-            _hp = value;
-            
-            if(_hp <= 0)
-                Destroy(this.gameObject);
-        }
-    }
-
-    protected void Start()
-    {
-        MaxHp = Hp;
-    }
-
-    public virtual void Damaged(int damage)
-    {
-        Hp -= damage;
+            ResourcesManager.Instance.Instantiate(ResourcesManager.VFX_PATH + "FX_DEATH_AA").transform.position =
+                this.transform.position;
+            AudioManager.Instance.PlaySfx(AudioManager.Sfxs.mouse_emote_09);
+            Destroy(this.gameObject);
+        };
     }
 }

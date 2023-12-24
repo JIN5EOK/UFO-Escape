@@ -9,33 +9,35 @@ public class BossEnemy : Enemy
 {
     private CannonBall _cannonBallPrefab;
     private Image _hpBar;
-    private Transform playerTrs;
-    private void Start()
+    private Transform _playerTrs;
+    [SerializeField] private Transform _firePos;
+
+    protected void Start()
     {
+
         base.Start();
-        playerTrs = FindObjectOfType<Player>().transform;
+        _playerTrs = FindObjectOfType<Player>().transform;
         GameObject barGo = ResourcesManager.Instance.Instantiate(ResourcesManager.UI_PATH + "BossHPUI");
         _cannonBallPrefab = ResourcesManager.Instance.GetResource<GameObject>( ResourcesManager.OBJECT_PATH + "CannonBall").GetComponent<CannonBall>();
         _hpBar = barGo.transform.GetChild(0).GetChild(0).GetComponent<Image>();
-    }
 
-    protected override void OnDestroy()
-    {
-        ResourcesManager.Instance.Instantiate(ResourcesManager.OBJECT_PATH + "CardKey");
-        base.OnDestroy();
+        Status.onDied += () =>
+        {
+            ResourcesManager.Instance.Instantiate(ResourcesManager.OBJECT_PATH + "CardKey");
+        };
     }
     
     private void Attack()
     {
         CannonBall ballObj = Instantiate(_cannonBallPrefab);
-        ballObj.transform.position = this.transform.position;
+        ballObj.transform.position = _firePos.position;
         AudioManager.Instance.PlaySfx(AudioManager.Sfxs.explosion_large_01);
-        ballObj.Launch(playerTrs);
+        ballObj.Launch(_playerTrs);
     }
     
     private void Update()
     {
-        Vector3 lookPos = new Vector3(playerTrs.position.x, transform.position.y, playerTrs.position.z);
+        Vector3 lookPos = new Vector3(_playerTrs.position.x, transform.position.y, _playerTrs.position.z);
         transform.LookAt(lookPos);
         AttackTimer();
     }
@@ -44,24 +46,34 @@ public class BossEnemy : Enemy
     private float attackDelayRand = 2.5f;
 
     private float curAttckTimer = 5.0f;
+
+    private float hpPer = 1.0f;
+
+
     private void AttackTimer()
     {
+
         if (curAttckTimer >= 0)
         {
             curAttckTimer -= Time.deltaTime;
         }
         else
         {
-            curAttckTimer = Random.Range(attackDelay - attackDelayRand, attackDelay + attackDelayRand);
+
+            //_animator.SetTrigger("FireTrigger"); 
+            curAttckTimer = Random.Range(attackDelay - attackDelayRand, attackDelay + attackDelayRand) * Mathf.Clamp(hpPer, 0.5f, 1.0f);
             Attack();
+            Debug.Log("공격");
         }
     }
 
-    public override void Damaged(int damage)
+    public override void TakeDamage(int damage)
     {
-        base.Damaged(damage);
-
-        if (Hp > 0)
-            _hpBar.fillAmount = (float)Hp / (float)MaxHp;
+        hpPer = (float)(Status.Hp - damage) / (float)Status.MaxHp;
+        if (Status.Hp - damage > 0)
+            _hpBar.fillAmount = hpPer;
+        else
+            _hpBar.fillAmount = 0;
+        base.TakeDamage(damage);
     }
 }

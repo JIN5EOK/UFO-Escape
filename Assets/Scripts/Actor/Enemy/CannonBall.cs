@@ -15,20 +15,30 @@ public class CannonBall : MonoBehaviour
     protected static readonly int MAXDROPCNT = 3;
     private bool _isDrop;
     private Rigidbody _rigidbody;
+    private bool _isHit = false;
     public void Launch(Transform target)
     {
-        this.transform.LookAt(target);
+        //this.transform.LookAt(target);
         Vector3 vec3 = (target.position - this.transform.position).normalized;
+        vec3.y = 0;
         _rigidbody = GetComponent<Rigidbody>();
         _rigidbody.AddForce(vec3 * 250);
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if(other.gameObject.CompareTag("ThrowObject"))
+            return;
+
+        if (_isHit == true)
+            return;
+
+        _isHit = true;
+        
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             AudioManager.Instance.PlaySfx(AudioManager.Sfxs.retro_impact_hit_03);
-            other.GetComponent<Player>().Damaged(1);
+            other.GetComponent<Player>().TakeDamage(1);
             Destroy(this.gameObject);
         }
         else
@@ -41,7 +51,12 @@ public class CannonBall : MonoBehaviour
             {
                 _rigidbody.useGravity = true;
                 // 던지는 오브젝트로 변환
-                gameObject.layer = LayerMask.NameToLayer("ThrowObject");
+                gameObject.layer = LayerMask.NameToLayer("Default");
+                gameObject.tag = "ThrowObject";
+                GameObject g = transform.GetChild(0).gameObject;
+                g.transform.SetParent(this.transform);
+                g.layer = LayerMask.NameToLayer("ThrowObject");
+                
                 ThrowObject thO = gameObject.AddComponent<ThrowObject>();
                 thO.IsReusable = false;
                 Destroy(this);

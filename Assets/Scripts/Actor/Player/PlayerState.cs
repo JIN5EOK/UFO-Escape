@@ -13,7 +13,17 @@ public abstract class PlayerState
 
     public virtual void Move(Vector2 vec)
     {
-        
+        if (vec == Vector2.zero)
+        {
+            if(_player.animator.GetBool("IsWalk") == true)
+                _player.animator.SetBool("IsWalk", false);
+            return;
+        }
+        else
+        {
+            if(_player.animator.GetBool("IsWalk") == false)
+                _player.animator.SetBool("IsWalk", true);
+        }
         float rotateDeg = Mathf.Rad2Deg * Mathf.Atan2(vec.y, vec.x * -1) - 90;
         Vector3 rotateVec = new Vector3(_player.transform.rotation.x, rotateDeg, _player.transform.rotation.z);
         _player.transform.rotation = Quaternion.Slerp(_player.transform.rotation, Quaternion.Euler(rotateVec), 100.0f);
@@ -48,7 +58,7 @@ public class PlayerDefaultState : PlayerState
 
 
         RaycastHit[] hits =
-            Physics.SphereCastAll(origin, radius, Vector3.up, 0.0f, 1 << LayerMask.NameToLayer("ThrowObject"));
+            Physics.SphereCastAll(origin, radius, Vector3.up, 0.0f);
         
         if (hits != null)
         {
@@ -56,6 +66,7 @@ public class PlayerDefaultState : PlayerState
             {
                 if (h.transform.TryGetComponent<ThrowObject>(out ThrowObject tObj))
                 {
+                    _player.animator.SetBool("IsGrab", true);
                     tObj.PickUp(_player);
                     _player.PickUpObject = tObj;
                     _player.State = PlayerPickUpState.GetState(_player);
@@ -90,6 +101,8 @@ public class PlayerPickUpState : PlayerState
 
     public override void Use()
     {
+        _player.animator.SetBool("IsGrab", false);
+        _player.animator.SetTrigger("Throw");
         _player.State = PlayerDefaultState.GetState(_player);
         _player.PickUpObject.Throw(_player);
     }

@@ -38,9 +38,6 @@ public class InputManager : MonoBehaviour
     }
     private void Move()
     {
-        if (_inputVector2 == Vector2.zero)
-            return;
-        
         _inputTarget.Move(_inputVector2);
     }
     private void Use()
